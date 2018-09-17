@@ -15,5 +15,26 @@ namespace Jour2_MVC5.Controllers
             ViewBag.total = 25;
             return View();
         }
+
+        // GET: InfoRequest
+        public ActionResult InfoRequest()
+        {
+            return View();
+        }
+
+        
+        // GET: ListNoms
+        public ActionResult ListNoms()
+        {
+            string[] teamMembers = { "Matt", "Leila", "Ahmed", "Andre" };
+            ViewBag.listNoms = teamMembers;
+            return View();
+        }
+
+        // GET: LeapYear
+        public ActionResult LeapYear()
+        {
+            return View();
+        }
     }
 }

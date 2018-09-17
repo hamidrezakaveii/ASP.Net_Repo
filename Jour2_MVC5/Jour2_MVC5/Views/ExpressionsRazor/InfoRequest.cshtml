@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "InfoRequest";
+}
+
+<h2>InfoRequest</h2>
+<table border="1">
+    <tr>
+        <td>Requested URL</td>
+        <td>Relative path</td>
+        <td>Full Path</td>
+        <td>HTTP Request Method</td>
+    </tr>
+    <tr>
+        <td>@Request.Url</td>
+        <td>@Request.FilePath</td>
+        <td>@Request.MapPath(Request.FilePath)</td>
+        <td>@Request.HttpMethod</td>
+    </tr>
+</table>
+

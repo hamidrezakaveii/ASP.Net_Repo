@@ -133,6 +133,9 @@
     <Content Include="Web.config" />
     <Content Include="Views\Store\Update.cshtml" />
     <Content Include="Views\ExpressionsRazor\ExpressionsRazor.cshtml" />
+    <Content Include="Views\ExpressionsRazor\InfoRequest.cshtml" />
+    <Content Include="Views\ExpressionsRazor\ListNoms.cshtml" />
+    <Content Include="Views\ExpressionsRazor\LeapYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />

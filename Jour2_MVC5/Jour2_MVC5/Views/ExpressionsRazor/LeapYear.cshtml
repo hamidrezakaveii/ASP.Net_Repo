@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "LeapYear";
+}
+
+<h2>LeapYear</h2>
+
+@if (DateTime.IsLeapYear(DateTime.Now.Year))
+{
+    @DateTime.Now.Year @:is a leap year
+}
+else
+{
+    @DateTime.Now.Year @:is not a leap year
+}
+
