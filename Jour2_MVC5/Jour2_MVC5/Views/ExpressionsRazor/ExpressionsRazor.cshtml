@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "ExpressionsRazor";
+}
+
+<h2>ExpressionsRazor</h2>
+<!--bloc a une seule instruction -->
+@{ var nombre = 7;}
+@{ var texte = "Hello world";}
+
+<!--inline expresssion -->
+<p>La valeur du nomre est : @nombre </p>
+<p>La valeur du texte est : @texte </p>
+
+
+<!--bloc multi instructions -->
+@{ 
+    var MessageDeBienvenue = "Welcome to our site!!";
+    var weekDay = DateTime.Now.DayOfWeek;
+    MessageDeBienvenue = MessageDeBienvenue + "Today is : " + weekDay;
+}
+
+<p>Voici le message : @MessageDeBienvenue</p>
+
+<!--Information provenant du controleurs -->
+<p>Information provenant du controlleur:</p>
+<p>Le total : @ViewBag.total</p>
+<p>Le message: @ViewBag.Message</p>
