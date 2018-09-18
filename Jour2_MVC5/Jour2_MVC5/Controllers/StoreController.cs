@@ -9,9 +9,17 @@ namespace Jour2_MVC5.Controllers
     public class StoreController : Controller
     {
         // GET: Store
-        public string Index()
+        public ActionResult Index(int? id, string name)
         {
-            return "Hello from Store.Index()";
+            if(!id.HasValue)
+            {
+                id = 777;
+                return RedirectToAction("Details", "Store", new { id = id });
+            }
+            else
+            {
+                return Content("nothing");
+            }
         }
 
         // GET: /Store/Browse
@@ -37,6 +45,15 @@ namespace Jour2_MVC5.Controllers
             ViewBag.nomModifie = nom.ToUpper();
             return View();
         }
+
+        // GET: /Store/Back
+        public ActionResult Back()
+        {
+            return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
+
+        }
+
+
 
 
 

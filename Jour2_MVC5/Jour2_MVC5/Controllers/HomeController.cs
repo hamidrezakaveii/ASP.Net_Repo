@@ -13,5 +13,19 @@ namespace Jour2_MVC5.Controllers
         {
             return View();
         }
+
+        // GET: Home/Random
+        public ActionResult Random()
+        {
+
+            // return Content("Hello World!");
+            //return HttpNotFound();
+            //return new EmptyResult();
+            //return RedirectToAction("Index", "Home", new {page = 1, sortBy="name" });
+            return View();
+        }
+
+
+         
     }
 }

@@ -41,6 +41,6 @@ C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\bin\Syste
 C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\bin\System.Web.Webpages.Razor.xml
 C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\bin\System.Web.Helpers.xml
 C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\bin\System.Web.Mvc.xml
-C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\obj\Debug\Jour2_MVC5.csprojResolveAssemblyReference.cache
 C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\obj\Debug\Jour2_MVC5.dll
 C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\obj\Debug\Jour2_MVC5.pdb
+C:\Users\HAMIDREZA\Documents\GitHub\ASP.Net_Repo\Jour2_MVC5\Jour2_MVC5\obj\Debug\Jour2_MVC5.csprojResolveAssemblyReference.cache
