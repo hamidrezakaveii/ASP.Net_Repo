@@ -1,0 +1,29 @@
+﻿@model Jour3_HtmlHelper.Models.Student
+
+
+@{
+    ViewBag.Title = "Index2";
+}
+
+<h2>Index2</h2>
+
+@using (Html.BeginForm("Save", "Register" ,FormMethod.Post))
+{
+
+    @Html.LabelFor(m => m.StudentName) @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control"})
+
+    @Html.LabelFor(m => m.Description) @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+
+    @Html.LabelFor(m => m.IsNewlyEnrolled) @Html.CheckBoxFor(m => m.IsNewlyEnrolled, new { @class = "form-control" })
+
+    <span>Male</span>@Html.RadioButtonFor(m => m.StudentGender, "Male")
+    <span>Female</span>@Html.RadioButtonFor(m => m.StudentGender, "Female")
+
+    @Html.DropDownListFor(m => m.StudentGender, new SelectList(Enum.GetValues(typeof(Jour3_HtmlHelper.Models.Gender))), "Select Gender")
+
+
+    <input type="submit" value="Send">
+
+
+}
+

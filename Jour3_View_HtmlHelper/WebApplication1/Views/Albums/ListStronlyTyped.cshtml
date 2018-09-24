@@ -1,0 +1,22 @@
+﻿<!--model WebApplication1.Models.Album-->
+
+@using WebApplication1.Models;
+
+@model IEnumerable<Album>
+
+
+@{
+    ViewBag.Title = "ListStronlyTyped";
+}
+
+<h2>ListStronlyTyped</h2>
+
+
+<ul>
+    @foreach (var i in Model)
+    {
+        <li>@i.Title</li>
+    }
+</ul>
+
+
