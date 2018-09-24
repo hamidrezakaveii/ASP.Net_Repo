@@ -1,0 +1,50 @@
+﻿@model Jour3_HtmlHelper.Models.Student
+
+@{
+    ViewBag.Title = "ConfirmerSave";
+}
+
+<h2>ConfirmerSave</h2>
+
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsNewlyEnrolled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsNewlyEnrolled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentGender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentGender)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
