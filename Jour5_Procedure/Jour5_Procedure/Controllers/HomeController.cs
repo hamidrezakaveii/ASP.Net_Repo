@@ -18,12 +18,12 @@ namespace Jour5_Procedure.Controllers
         {
             //connectionstring.con pour get the chaine de connection
 
-            List<Movie> listMovie = Utils.GetInstance().GetListeMovie();
+            List<Movie> listAllMovie = Utils.GetInstance().GetListeMovie();
 
 
 
 
-            return View(listMovie);
+            return View(listAllMovie);
         }
 
 
@@ -61,7 +61,15 @@ namespace Jour5_Procedure.Controllers
         // GET: Home/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            List<Movie> listAllMovie = new List<Movie>();
+            listAllMovie = Utils.GetInstance().GetListeMovie();
+            //List<Movie> listMovieById = Utils.GetInstance().GetMovieById(listAllMovie, id: id);
+
+            var list = listAllMovie.Where(m => m.Id == id).FirstOrDefault();
+
+
+            return View(list);
         }
 
         // POST: Home/Edit/5
@@ -71,6 +79,23 @@ namespace Jour5_Procedure.Controllers
             try
             {
                 // TODO: Add update logic here
+                /*foreach (var key in collection.AllKeys)
+                {
+                    var value = collection[key];
+                    // etc.
+                }
+
+                foreach (var key in collection.Keys)
+                {
+                    var value = collection[key.ToString()];
+                    // etc.
+                }*/
+
+                string title = collection["Title"];
+                string genre = collection["Genre"];
+                int year = Convert.ToInt32(collection["Year"]);
+
+                Utils.GetInstance().UpdateMovie(id, title, genre, year);
 
                 return RedirectToAction("Index");
             }

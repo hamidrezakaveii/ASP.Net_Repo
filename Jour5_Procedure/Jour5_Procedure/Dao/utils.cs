@@ -27,9 +27,9 @@ namespace Jour5_Procedure.Dao
         }
 
 
-        public List<Movie> GetListeMovie()
+        internal List<Movie> GetListeMovie()
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=test;Integrated Security=True;Pooling=False");
+            SqlConnection sqlConnection = new SqlConnection("Data Source=(LocalDB)\\MSSQLlocalDB;Initial Catalog=MovieDB;Integrated Security=True;Pooling=False");
 
             SqlCommand cmd = new SqlCommand();
             SqlDataReader reader;
@@ -66,16 +66,54 @@ namespace Jour5_Procedure.Dao
 
             return result;
         }
+
+
+
+        public List<Movie> GetMovieById(List<Movie> list, int id)
+        {
+            List<Movie> listById = new List<Movie>();
+
+            foreach (var item in list)
+            {
+                if(item.Id == id)
+                {
+                    listById.Add(item);
+                }
+            }
+
+
+
+            return listById;
+        }
+
+        internal void UpdateMovie(int id, string title, string genre, int year)
+        {
+            SqlConnection sqlConnection = new SqlConnection("Data Source=(LocalDB)\\MSSQLlocalDB;Initial Catalog=MovieDB;Integrated Security=True;Pooling=False");
+
+            SqlCommand cmd = new SqlCommand();
+            //SqlDataReader reader;
+         //   @Id INT,
+         //   @Title NVARCHAR(50),
+	        //@Genre NVARCHAR(50),
+	        //@Year INT
+
+            cmd.CommandText = "UpdateMovieById";
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Title", title);
+            cmd.Parameters.AddWithValue("@Genre", genre);
+            cmd.Parameters.AddWithValue("@Year", year);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Connection = sqlConnection;
+
+
+            sqlConnection.Open();
+
+            cmd.ExecuteNonQuery();
+
+            sqlConnection.Close();
+        }
     }
 
 
-    /*public List<Movie> GetMovieById(List<> list, int id)
-    {
-        List<Movie> listById = new List<Movie>();
 
-
-
-
-        return listById;
-    }*/
 }
