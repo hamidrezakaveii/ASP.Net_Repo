@@ -1,0 +1,48 @@
+﻿@model Jour4_JSON_Filtre.Models.Movie
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    
+    <script src="~/Content/jquery-3.3.1.js"></script>
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+            $("#btnGetMovies").click(function () {
+                var actionUrl = '@Url.Action("List", "Home")';
+                $.getJSON(actionUrl, displayData);
+            });
+                                 
+        });
+
+        function displayData(response) {
+            if (response != null) {
+                for (var i = 0; i < response.length; i++) {
+                    $("#movieList").append("<li>" + response[i].Title + " " + response[i].Genre + " " + response[i].Year + "</li>");
+                }
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+    <h2>List Movies</h2>
+
+    <input name="btnGetMovies" id="btnGetMovies" type="submit" value="Get Movies" />
+    <ul id="movieList"></ul>
+
+
+</body>
+
+</html>
+
+
+
