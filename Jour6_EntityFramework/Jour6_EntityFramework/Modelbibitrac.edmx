@@ -1,0 +1,498 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="bibitracModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bugs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateBug" Type="datetime" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="Priorite" Type="int" Nullable="false" />
+          <Property Name="Titre" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Description" Type="ntext" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Personnes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isAdmin" Type="bit" Nullable="false" />
+          <Property Name="isTesteur" Type="bit" Nullable="false" />
+          <Property Name="isDevelopeur" Type="bit" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Details" Type="ntext" />
+          <Property Name="upsize_ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Prenom" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PersonsProjets">
+          <Key>
+            <PropertyRef Name="PersonID" />
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projets">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titre" Type="nvarchar" MaxLength="255" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="upsize_ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Statuts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titre" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="upsize_ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Tickets">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateTicket" Type="datetime" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="Message" Type="ntext" />
+          <Property Name="BugID" Type="int" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+          <Property Name="upsize_ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_Bugs_status">
+          <End Role="Statuts" Type="Self.Statuts" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bugs" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Statuts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBug_FK00">
+          <End Role="Personnes" Type="Self.Personnes" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bugs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBug_FK01">
+          <End Role="Projets" Type="Self.Projets" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bugs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projets">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK00">
+          <End Role="Bugs" Type="Self.Bugs" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bugs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="BugID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK01">
+          <End Role="Personnes" Type="Self.Personnes" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK02">
+          <End Role="Statuts" Type="Self.Statuts" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblXPersonProject_FK00">
+          <End Role="Personnes" Type="Self.Personnes" Multiplicity="1" />
+          <End Role="PersonsProjets" Type="Self.PersonsProjets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonsProjets">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblXPersonProject_FK01">
+          <End Role="Projets" Type="Self.Projets" Multiplicity="1" />
+          <End Role="PersonsProjets" Type="Self.PersonsProjets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projets">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonsProjets">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bibitracModelStoreContainer">
+          <EntitySet Name="Bugs" EntityType="Self.Bugs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personnes" EntityType="Self.Personnes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonsProjets" EntityType="Self.PersonsProjets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projets" EntityType="Self.Projets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Statuts" EntityType="Self.Statuts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bugs_status" Association="Self.FK_Bugs_status">
+            <End Role="Statuts" EntitySet="Statuts" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblBug_FK00" Association="Self.tblBug_FK00">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblBug_FK01" Association="Self.tblBug_FK01">
+            <End Role="Projets" EntitySet="Projets" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK00" Association="Self.tblIssue_FK00">
+            <End Role="Bugs" EntitySet="Bugs" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK01" Association="Self.tblIssue_FK01">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK02" Association="Self.tblIssue_FK02">
+            <End Role="Statuts" EntitySet="Statuts" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="tblXPersonProject_FK00" Association="Self.tblXPersonProject_FK00">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="PersonsProjets" EntitySet="PersonsProjets" />
+          </AssociationSet>
+          <AssociationSet Name="tblXPersonProject_FK01" Association="Self.tblXPersonProject_FK01">
+            <End Role="Projets" EntitySet="Projets" />
+            <End Role="PersonsProjets" EntitySet="PersonsProjets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bibitracModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bug">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateBug" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="Priorite" Type="Int32" Nullable="false" />
+          <Property Name="Titre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Statut" Relationship="Self.FK_Bugs_status" FromRole="Bugs" ToRole="Statuts" />
+          <NavigationProperty Name="Personne" Relationship="Self.tblBug_FK00" FromRole="Bugs" ToRole="Personnes" />
+          <NavigationProperty Name="Projet" Relationship="Self.tblBug_FK01" FromRole="Bugs" ToRole="Projets" />
+          <NavigationProperty Name="Tickets" Relationship="Self.tblIssue_FK00" FromRole="Bugs" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Personne">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="isTesteur" Type="Boolean" Nullable="false" />
+          <Property Name="isDevelopeur" Type="Boolean" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="upsize_ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Prenom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bugs" Relationship="Self.tblBug_FK00" FromRole="Personnes" ToRole="Bugs" />
+          <NavigationProperty Name="Tickets" Relationship="Self.tblIssue_FK01" FromRole="Personnes" ToRole="Tickets" />
+          <NavigationProperty Name="Projets" Relationship="Self.PersonsProjets" FromRole="Personnes" ToRole="Projets" />
+        </EntityType>
+        <EntityType Name="Projet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="upsize_ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Bugs" Relationship="Self.tblBug_FK01" FromRole="Projets" ToRole="Bugs" />
+          <NavigationProperty Name="Personnes" Relationship="Self.PersonsProjets" FromRole="Projets" ToRole="Personnes" />
+        </EntityType>
+        <EntityType Name="Statut">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="upsize_ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Bug" Relationship="Self.FK_Bugs_status" FromRole="Statuts" ToRole="Bugs" />
+          <NavigationProperty Name="Tickets" Relationship="Self.tblIssue_FK02" FromRole="Statuts" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTicket" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BugID" Type="Int32" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <Property Name="upsize_ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Bug" Relationship="Self.tblIssue_FK00" FromRole="Tickets" ToRole="Bugs" />
+          <NavigationProperty Name="Personne" Relationship="Self.tblIssue_FK01" FromRole="Tickets" ToRole="Personnes" />
+          <NavigationProperty Name="Statut" Relationship="Self.tblIssue_FK02" FromRole="Tickets" ToRole="Statuts" />
+        </EntityType>
+        <Association Name="FK_Bugs_status">
+          <End Role="Statuts" Type="Self.Statut" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bug" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Statuts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBug_FK00">
+          <End Role="Personnes" Type="Self.Personne" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblBug_FK01">
+          <End Role="Projets" Type="Self.Projet" Multiplicity="1" />
+          <End Role="Bugs" Type="Self.Bug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projets">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bugs">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK00">
+          <End Role="Bugs" Type="Self.Bug" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bugs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="BugID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK01">
+          <End Role="Personnes" Type="Self.Personne" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblIssue_FK02">
+          <End Role="Statuts" Type="Self.Statut" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonsProjets">
+          <End Role="Personnes" Type="Self.Personne" Multiplicity="*" />
+          <End Role="Projets" Type="Self.Projet" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="bibitracEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bugs" EntityType="Self.Bug" />
+          <EntitySet Name="Personnes" EntityType="Self.Personne" />
+          <EntitySet Name="Projets" EntityType="Self.Projet" />
+          <EntitySet Name="Statuts" EntityType="Self.Statut" />
+          <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+          <AssociationSet Name="FK_Bugs_status" Association="Self.FK_Bugs_status">
+            <End Role="Statuts" EntitySet="Statuts" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblBug_FK00" Association="Self.tblBug_FK00">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblBug_FK01" Association="Self.tblBug_FK01">
+            <End Role="Projets" EntitySet="Projets" />
+            <End Role="Bugs" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK00" Association="Self.tblIssue_FK00">
+            <End Role="Bugs" EntitySet="Bugs" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK01" Association="Self.tblIssue_FK01">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="tblIssue_FK02" Association="Self.tblIssue_FK02">
+            <End Role="Statuts" EntitySet="Statuts" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="PersonsProjets" Association="Self.PersonsProjets">
+            <End Role="Personnes" EntitySet="Personnes" />
+            <End Role="Projets" EntitySet="Projets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bibitracModelStoreContainer" CdmEntityContainer="bibitracEntities">
+          <EntitySetMapping Name="Bugs">
+            <EntityTypeMapping TypeName="bibitracModel.Bug">
+              <MappingFragment StoreEntitySet="Bugs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DateBug" ColumnName="DateBug" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Priorite" ColumnName="Priorite" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personnes">
+            <EntityTypeMapping TypeName="bibitracModel.Personne">
+              <MappingFragment StoreEntitySet="Personnes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
+                <ScalarProperty Name="isTesteur" ColumnName="isTesteur" />
+                <ScalarProperty Name="isDevelopeur" ColumnName="isDevelopeur" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="upsize_ts" ColumnName="upsize_ts" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projets">
+            <EntityTypeMapping TypeName="bibitracModel.Projet">
+              <MappingFragment StoreEntitySet="Projets">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="upsize_ts" ColumnName="upsize_ts" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statuts">
+            <EntityTypeMapping TypeName="bibitracModel.Statut">
+              <MappingFragment StoreEntitySet="Statuts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="upsize_ts" ColumnName="upsize_ts" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="bibitracModel.Ticket">
+              <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DateTicket" ColumnName="DateTicket" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="BugID" ColumnName="BugID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="upsize_ts" ColumnName="upsize_ts" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PersonsProjets" TypeName="bibitracModel.PersonsProjets" StoreEntitySet="PersonsProjets">
+            <EndProperty Name="Personnes">
+              <ScalarProperty Name="ID" ColumnName="PersonID" />
+            </EndProperty>
+            <EndProperty Name="Projets">
+              <ScalarProperty Name="ID" ColumnName="ProjectID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
