@@ -1,0 +1,34 @@
+CREATE PROCEDURE [dbo].[GetListFrais]
+AS
+
+Begin
+	SELECT * from Frais order by fraisrestaurant  
+END
+
+
+----------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[GetListVille]
+AS
+
+Begin
+	SELECT * from Ville
+END
+
+--------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[InsertFrais]
+	        @nom varchar(50),
+            @prenom varchar(50),
+            @data varchar(50), 
+            @kilometre int, 
+            @ville varchar(50), 
+            @fraisrestaurant decimal, 
+            @codepostal varchar(50), 
+            @courriel varchar(50)
+AS
+	begin
+	Insert into Frais(nom, prenom, data, kilometre, ville, fraisrestaurant, codepostal, courriel) values(@nom, @prenom, @data, @kilometre, @ville, @fraisrestaurant, @codepostal, @courriel)
+	end
+
+GO
+
+----------------------------------------------------------------------------------
