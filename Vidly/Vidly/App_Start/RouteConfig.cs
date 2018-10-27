@@ -16,15 +16,28 @@ namespace Vidly
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //Enable MVC attribute Routes
+            routes.MapMvcAttributeRoutes();
+
+
             //route for CustomHandler 
             //routes.Add(new Route("Home/Custom", new CustomRouteHandler()));
 
+            //Customs route
+            //routes.MapRoute("MoviesByByReleasedDate",
+            //    "movies/released/{year}/{month}",
+            //    new { controller = "movies", action = "ByReleasedDate" },
+            //    new { year = @"2017|2018", month = @"\d{2}" }
+            //    );
 
+            //Customs route
             routes.MapRoute(
                 "EditMovie",
-                "Movies/Edit/{id}",
-                new { controller = "Movies", action = "Edit", MovieId = "id" }
+                "Movies/Edit/{movieId}",
+                new { controller = "Movies", action = "Edit" }
                 );
+
+
 
 
 
