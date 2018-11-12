@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LeaveManagmentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LMEmployees">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="EmpFName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpLName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="date" Nullable="false" />
+          <Property Name="ManagerEmpId" Type="int" Nullable="false" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sex" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="Tel" Type="nvarchar" MaxLength="30" />
+          <Property Name="SickLeaveBalance" Type="int" Nullable="false" />
+          <Property Name="EarnedLeaveBalance" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pass" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LMLeaveHistory">
+          <Key>
+            <PropertyRef Name="LeaveId" />
+          </Key>
+          <Property Name="LeaveId" Type="int" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="ApplicationDate" Type="date" Nullable="false" />
+          <Property Name="LeaveStartDate" Type="date" Nullable="false" />
+          <Property Name="LeaveEndDate" Type="date" Nullable="false" />
+          <Property Name="LeaveType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LeaveDesc" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LeaveState" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StateReason" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="LMEmployees_MAN_EMP_ID_FK">
+          <End Role="LMEmployees" Type="Self.LMEmployees" Multiplicity="1" />
+          <End Role="LMEmployees1" Type="Self.LMEmployees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LMEmployees">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LMEmployees1">
+              <PropertyRef Name="ManagerEmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LMLeaveHistory_EMP_ID_FK">
+          <End Role="LMEmployees" Type="Self.LMEmployees" Multiplicity="1" />
+          <End Role="LMLeaveHistory" Type="Self.LMLeaveHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LMEmployees">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LMLeaveHistory">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LeaveManagmentModelStoreContainer">
+          <EntitySet Name="LMEmployees" EntityType="Self.LMEmployees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LMLeaveHistory" EntityType="Self.LMLeaveHistory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="LMEmployees_MAN_EMP_ID_FK" Association="Self.LMEmployees_MAN_EMP_ID_FK">
+            <End Role="LMEmployees" EntitySet="LMEmployees" />
+            <End Role="LMEmployees1" EntitySet="LMEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="LMLeaveHistory_EMP_ID_FK" Association="Self.LMLeaveHistory_EMP_ID_FK">
+            <End Role="LMEmployees" EntitySet="LMEmployees" />
+            <End Role="LMLeaveHistory" EntitySet="LMLeaveHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LeaveManagmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LMEmployee">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <Property Name="EmpFName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpLName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ManagerEmpId" Type="Int32" Nullable="false" />
+          <Property Name="Grade" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Tel" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="SickLeaveBalance" Type="Int32" Nullable="false" />
+          <Property Name="EarnedLeaveBalance" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LMEmployees1" Relationship="Self.LMEmployees_MAN_EMP_ID_FK" FromRole="LMEmployees" ToRole="LMEmployees1" />
+          <NavigationProperty Name="LMEmployee1" Relationship="Self.LMEmployees_MAN_EMP_ID_FK" FromRole="LMEmployees1" ToRole="LMEmployees" />
+          <NavigationProperty Name="LMLeaveHistories" Relationship="Self.LMLeaveHistory_EMP_ID_FK" FromRole="LMEmployees" ToRole="LMLeaveHistory" />
+        </EntityType>
+        <EntityType Name="LMLeaveHistory">
+          <Key>
+            <PropertyRef Name="LeaveId" />
+          </Key>
+          <Property Name="LeaveId" Type="Int32" Nullable="false" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LeaveStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LeaveEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LeaveType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LeaveDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LeaveState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StateReason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="LMEmployee" Relationship="Self.LMLeaveHistory_EMP_ID_FK" FromRole="LMLeaveHistory" ToRole="LMEmployees" />
+        </EntityType>
+        <Association Name="LMEmployees_MAN_EMP_ID_FK">
+          <End Role="LMEmployees" Type="Self.LMEmployee" Multiplicity="1" />
+          <End Role="LMEmployees1" Type="Self.LMEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LMEmployees">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LMEmployees1">
+              <PropertyRef Name="ManagerEmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LMLeaveHistory_EMP_ID_FK">
+          <End Role="LMEmployees" Type="Self.LMEmployee" Multiplicity="1" />
+          <End Role="LMLeaveHistory" Type="Self.LMLeaveHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LMEmployees">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LMLeaveHistory">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UserContextEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LMEmployees" EntityType="Self.LMEmployee" />
+          <EntitySet Name="LMLeaveHistories" EntityType="Self.LMLeaveHistory" />
+          <AssociationSet Name="LMEmployees_MAN_EMP_ID_FK" Association="Self.LMEmployees_MAN_EMP_ID_FK">
+            <End Role="LMEmployees" EntitySet="LMEmployees" />
+            <End Role="LMEmployees1" EntitySet="LMEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="LMLeaveHistory_EMP_ID_FK" Association="Self.LMLeaveHistory_EMP_ID_FK">
+            <End Role="LMEmployees" EntitySet="LMEmployees" />
+            <End Role="LMLeaveHistory" EntitySet="LMLeaveHistories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LeaveManagmentModelStoreContainer" CdmEntityContainer="UserContextEntities">
+          <EntitySetMapping Name="LMEmployees">
+            <EntityTypeMapping TypeName="LeaveManagmentModel.LMEmployee">
+              <MappingFragment StoreEntitySet="LMEmployees">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpFName" ColumnName="EmpFName" />
+                <ScalarProperty Name="EmpLName" ColumnName="EmpLName" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="ManagerEmpId" ColumnName="ManagerEmpId" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="SickLeaveBalance" ColumnName="SickLeaveBalance" />
+                <ScalarProperty Name="EarnedLeaveBalance" ColumnName="EarnedLeaveBalance" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LMLeaveHistories">
+            <EntityTypeMapping TypeName="LeaveManagmentModel.LMLeaveHistory">
+              <MappingFragment StoreEntitySet="LMLeaveHistory">
+                <ScalarProperty Name="LeaveId" ColumnName="LeaveId" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="LeaveStartDate" ColumnName="LeaveStartDate" />
+                <ScalarProperty Name="LeaveEndDate" ColumnName="LeaveEndDate" />
+                <ScalarProperty Name="LeaveType" ColumnName="LeaveType" />
+                <ScalarProperty Name="LeaveDesc" ColumnName="LeaveDesc" />
+                <ScalarProperty Name="LeaveState" ColumnName="LeaveState" />
+                <ScalarProperty Name="StateReason" ColumnName="StateReason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

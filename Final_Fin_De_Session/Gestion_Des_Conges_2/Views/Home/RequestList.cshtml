@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Gestion_Des_Conges_2.LMLeaveHistory>
+
+@{
+    ViewBag.Title = "RequestList";
+}
+
+<h2>RequestList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StateReason)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveDesc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StateReason)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
