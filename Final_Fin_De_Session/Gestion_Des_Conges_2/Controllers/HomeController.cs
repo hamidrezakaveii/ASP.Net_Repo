@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -88,7 +89,7 @@ namespace Gestion_Des_Conges_2.Controllers
             //}
             string msg = "";
 
-            if (Request.HttpMethod == "POST")
+            http://localhost:12138/api/Report/ListEmployeesif (Request.HttpMethod == "POST")
             {
                 if (ModelState.IsValid)
                 {
@@ -263,18 +264,49 @@ namespace Gestion_Des_Conges_2.Controllers
                 }
             }
 
-
-
-
-
-
-
-
-
-
             return View(requestCheckList);
         }
 
+
+
+        [Authorize(Roles = "Manager")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult RequestCheckEdit(int? id,FormCollection collection)
+        {
+
+
+            var verifyItem = context.LMLeaveHistories.Where(l => l.LeaveId == id).FirstOrDefault();
+
+            if (Request.HttpMethod == "POST")
+            {
+                var leaveHistory = new LMLeaveHistory()
+                {
+                    LeaveId = Convert.ToInt32(collection.Get("LeaveId")),
+                    EmpId = Convert.ToInt32(collection.Get("EmpId")),
+                    ApplicationDate = Convert.ToDateTime(collection.Get("ApplicationDate")),
+                    LeaveStartDate = Convert.ToDateTime(collection.Get("LeaveStartDate")),
+                    LeaveEndDate = Convert.ToDateTime(collection.Get("LeaveEndDate")),
+                    LeaveType = collection.Get("LeaveType"),
+                    LeaveDesc = collection.Get("LeaveDesc"),
+                    LeaveState = collection.Get("LeaveState"),
+                    StateReason = collection.Get("StateReason")
+                };
+
+                context.LMLeaveHistories.AddOrUpdate(leaveHistory);
+                context.SaveChanges();
+
+
+                return RedirectToAction("RequestCheck");
+            }
+
+
+
+
+
+
+
+            return View(verifyItem);
+        }
 
 
         // GET: Home/Details/5
