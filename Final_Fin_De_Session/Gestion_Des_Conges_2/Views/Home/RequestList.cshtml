@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Gestion_Des_Conges_2.LMLeaveHistory>
 
 @{
-    ViewBag.Title = "RequestList";
+    ViewBag.Title = "Leave Requests List";
 }
 
-<h2>RequestList</h2>
+<h2></h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 <table class="table">
     <tr>
         <th>
@@ -38,7 +38,7 @@
         <th>
             @Html.DisplayNameFor(model => model.StateReason)
         </th>
-        <th></th>
+        @*<th></th>*@
     </tr>
 
 @foreach (var item in Model) {
@@ -70,11 +70,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.StateReason)
         </td>
-        <td>
+        @*<td>
             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
+        </td>*@
     </tr>
 }
 

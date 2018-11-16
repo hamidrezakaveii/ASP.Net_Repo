@@ -1,10 +1,10 @@
 ﻿@model Gestion_Des_Conges_2.LMEmployee
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Employee";
 }
 
-<h2>Create</h2>
+<h2>Please create the new employee here:</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Create new employee</h4>
+        <h4>Please add the new employee information here:</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -124,9 +124,9 @@
 
 }
 
-<div>
+@*<div>
     @Html.ActionLink("Back to List", "Index")
-</div>
+</div>*@
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

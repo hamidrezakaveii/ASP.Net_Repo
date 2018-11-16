@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Gestion_Des_Conges_2.LMLeaveHistory>
 
 @{
-    ViewBag.Title = "RequestCheck";
+    ViewBag.Title = "Requested Leave List";
 }
 
-<h2>RequestCheck</h2>
+<h2>Please verify the requested leaves here:</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 <table class="table">
     <tr>
         <th>
@@ -71,7 +71,7 @@
             @Html.DisplayFor(modelItem => item.StateReason)
         </td>
         <td>
-            @Html.ActionLink("Verify the request", "RequestCheckEdit", new { id=item.LeaveId })
+            @Html.ActionLink("Verify request", "RequestCheckEdit", new { id=item.LeaveId })
         </td>
     </tr>
 }

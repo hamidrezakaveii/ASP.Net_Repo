@@ -89,7 +89,7 @@ namespace Gestion_Des_Conges_2.Controllers
             //}
             string msg = "";
 
-            http://localhost:12138/api/Report/ListEmployeesif (Request.HttpMethod == "POST")
+            if (Request.HttpMethod == "POST")
             {
                 if (ModelState.IsValid)
                 {

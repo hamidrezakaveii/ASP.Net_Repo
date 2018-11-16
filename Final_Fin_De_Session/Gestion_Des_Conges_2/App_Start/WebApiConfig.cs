@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Gestion_Des_Conges_2
 {
@@ -18,6 +19,10 @@ namespace Gestion_Des_Conges_2
             );
 
             config.EnableCors(new EnableCorsAttribute("*", "*", "GET,PUT,POST,DELETE"));
+
+            var json = config.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }

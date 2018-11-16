@@ -1,8 +1,18 @@
-﻿
+﻿@using Gestion_Des_Conges_2.Models
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Leave Management Solution";
 }
 
-<h2>Welcome @{ @Html.ViewContext.HttpContext.Session["UserProfile"] }</h2>
+@{
+    if(Session["UserProfile"] != null)
+    {
+        var listBackFromSession = (UserProfileSessionData)Session["UserProfile"];
+        <h2>Welcome @listBackFromSession.FullName to the system :</h2>
+        <li>Your user id: @listBackFromSession.UserId</li>
+        <li>Your email address is: @listBackFromSession.EmailAddress</li>
+
+    }
+}
 
 
