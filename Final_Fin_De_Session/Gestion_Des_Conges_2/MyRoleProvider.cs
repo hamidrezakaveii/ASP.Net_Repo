@@ -46,6 +46,8 @@ namespace Gestion_Des_Conges_2
             throw new NotImplementedException();
         }
 
+
+        //Access to the method based on the role 
         public override string[] GetRolesForUser(string username)
         {
             //throw new NotImplementedException();

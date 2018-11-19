@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -65,28 +66,12 @@ namespace Gestion_Des_Conges_2.Controllers
         //}
 
 
-        //[HttpPost]
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Login(Login login, string ReturnUrl)
         {
 
 
-            //string test = query.ToString();
-
-            //if (query != null)
-            //{
-            //    msg = "Welcome";
-            //    Session["id"] = query.EmpId;
-            //    Session["fname"] = query.EmpFName;
-            //    Session["lname"] = query.EmpLName;
-
-            //}
-            //else
-            //{
-
-            //    RedirectToAction("Login", "Home", FormMethod.Get);
-            //    return Redirect(Request.UrlReferrer.PathAndQuery);    //redirect de la meme page si il n'y pas de resultat
-            //}
             string msg = "";
 
             if (Request.HttpMethod == "POST")
@@ -188,7 +173,7 @@ namespace Gestion_Des_Conges_2.Controllers
 
                 if (result == 1)
                 {
-                    ViewData["action"] = "The request was transfered successfully.";
+                    ViewData["action"] = "The request was transferred successfully.";
                 }
                 else
                 {
@@ -197,7 +182,7 @@ namespace Gestion_Des_Conges_2.Controllers
 
             }
 
-            
+                
 
                 return View();
         }
@@ -293,7 +278,28 @@ namespace Gestion_Des_Conges_2.Controllers
                 };
 
                 context.LMLeaveHistories.AddOrUpdate(leaveHistory);
-                context.SaveChanges();
+
+                
+                try
+                {
+                    context.SaveChanges();
+
+                    //ntext.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    throw;
+                }
 
 
                 return RedirectToAction("RequestCheck");
@@ -309,106 +315,109 @@ namespace Gestion_Des_Conges_2.Controllers
         }
 
 
-        // GET: Home/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public ActionResult Create()
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult AllRequest()
         {
-            ViewBag.Grade = new SelectList(Enum.GetValues(typeof(Grade)), Grade.Employee);
-            ViewBag.Sex = new SelectList(Enum.GetValues(typeof(Sex)), Sex.Male);
-            //ViewBag.Grade = new SelectList(Enum.GetValues(typeof(Grade)), Grade.Employee);
 
-            //var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(x => new LMEmployee() { EmpId = x.EmpId, EmpFName = x.EmpFName, EmpLName = x.EmpLName }).OrderBy(x => x.EmpId).ToArray();
-            var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(e => e.EmpId).ToArray();
-            IEnumerable<Manager> items = queryManager.Select(a => (Manager)Enum.Parse(typeof(Manager), a.ToString()));
+            var allRequest = context.LMLeaveHistories.Select(r => r);
 
-            ViewBag.Manager = new SelectList(items);
 
-            return View();
+            return View(allRequest);
         }
 
+
+
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet]
+        //public ActionResult Create()
+        //{
+        //    ViewBag.Grade = new SelectList(Enum.GetValues(typeof(Grade)), Grade.Employee);
+        //    ViewBag.Sex = new SelectList(Enum.GetValues(typeof(Sex)), Sex.Male);
+        //    ViewBag.Grade = new SelectList(Enum.GetValues(typeof(Grade)), Grade.Employee);
+
+            //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(x => new LMEmployee() { EmpId = x.EmpId, EmpFName = x.EmpFName, EmpLName = x.EmpLName }).OrderBy(x => x.EmpId).ToArray();
+            //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(e => e.EmpId).ToArray();
+            //    IEnumerable<Manager> items = queryManager.Select(a => (Manager)Enum.Parse(typeof(Manager), a.ToString()));
+
+            //    ViewBag.Manager = new SelectList(items);
+            //    ViewData["msg"] = "";
+
+            //    return View();
+            //}
+
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Create(FormCollection collection)
         {
-            try
+
+            if (Request.HttpMethod == "POST")
             {
-                // TODO: Add insert logic here
-                var employee = new LMEmployee()
+                //int checkEmployee = 0;
+                var empId = Convert.ToInt32(collection.Get("EmpId"));
+                var checkEmployee = context.LMEmployees.Where(e => e.EmpId == empId).FirstOrDefault();
+
+                if (checkEmployee != null)
                 {
-                    EmpId = Convert.ToInt32(collection.Get("EmpId")),
-                    EmpFName = collection.Get("EmpFName"),
-                    EmpLName = collection.Get("EmpLName"),
-                    DateOfBirth = Convert.ToDateTime(collection.Get("DateOfBirth")),
-                    ManagerEmpId = Convert.ToInt32(collection.Get("ManagerEmpId")),
-                    Grade = collection.Get("Grade"),
-                    Sex = collection.Get("Sex"),
-                    Tel = collection.Get("Tel"),
-                    SickLeaveBalance = Convert.ToInt32(collection.Get("SickLeaveBalance")),
-                    EarnedLeaveBalance = Convert.ToInt32(collection.Get("EarnedLeaveBalance")),
-                    Email = collection.Get("Email"),
-                    Pass = collection.Get("Pass")
-                };
+                    ViewData["msg"] = "The employee with the same id exist.";
+                    return View();
+                }
 
-                //context.Add(employee);
-                context.LMEmployees.Add(employee);
-                var result = context.SaveChanges();    //le resultat vas etre 1 si le requete executé avec le successé.
+                    var employee = new LMEmployee()
+                    {
+                        EmpId = Convert.ToInt32(collection.Get("EmpId")),
+                        EmpFName = collection.Get("EmpFName"),
+                        EmpLName = collection.Get("EmpLName"),
+                        DateOfBirth = Convert.ToDateTime(collection.Get("DateOfBirth")),
+                        ManagerEmpId = Convert.ToInt32(collection.Get("ManagerEmpId")),
+                        Grade = collection.Get("Grade"),
+                        Sex = collection.Get("Sex"),
+                        Tel = collection.Get("Tel"),
+                        SickLeaveBalance = Convert.ToInt32(collection.Get("SickLeaveBalance")),
+                        EarnedLeaveBalance = Convert.ToInt32(collection.Get("EarnedLeaveBalance")),
+                        Email = collection.Get("Email"),
+                        Pass = collection.Get("Pass")
+                    };
 
-                return RedirectToAction("Index");
+                    //context.Add(employee);
+                    context.LMEmployees.Add(employee);
+                int result =0;
+                try
+                {
+                    result = context.SaveChanges(); //le resultat vas etre 1 si le requete executé avec le successé.
+
+                    //ntext.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    throw;
+                }
+           
+                    if (result == 1)
+                    {
+                        ViewData["msg"] = "The employee created successfully.";
+                        return View();
+                    }
+
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: Home/Edit/5
-        public ActionResult Edit(int id)
-        {
             return View();
+
         }
 
-        // POST: Home/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Home/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Home/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
