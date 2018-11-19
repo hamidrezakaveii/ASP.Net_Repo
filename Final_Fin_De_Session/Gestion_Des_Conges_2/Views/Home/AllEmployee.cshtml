@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Gestion_Des_Conges_2.LMEmployee>
+
+@{
+    ViewBag.Title = "AllEmployee";
+}
+
+<h2>AllEmployee</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpFName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpLName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ManagerEmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Grade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SickLeaveBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EarnedLeaveBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pass)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpFName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpLName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ManagerEmpId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Grade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SickLeaveBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EarnedLeaveBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pass)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

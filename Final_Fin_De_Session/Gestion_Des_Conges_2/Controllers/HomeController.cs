@@ -12,7 +12,7 @@ using Gestion_Des_Conges_2.Models;
 
 namespace Gestion_Des_Conges_2.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller 
     {
 
         // Definition des variables
@@ -328,6 +328,22 @@ namespace Gestion_Des_Conges_2.Controllers
             return View(allRequest);
         }
 
+
+
+        [Authorize(Roles = "Admin")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult AllEmployee()
+        {
+            //ReportController rc = new ReportController();
+
+
+
+            var listEmployee = ReportController.GetEmployees();
+
+
+
+            return View(listEmployee);
+        }
 
 
 

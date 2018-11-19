@@ -245,6 +245,7 @@
     <Content Include="Views\Home\RequestCheck.cshtml" />
     <Content Include="Views\Home\RequestCheckEdit.cshtml" />
     <Content Include="Views\Home\AllRequest.cshtml" />
+    <Content Include="Views\Home\AllEmployee.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -10,11 +10,13 @@ namespace Gestion_Des_Conges_2.Controllers
     [Authorize(Roles = "Admin")]
     public class ReportController : ApiController
     {
-        UserContextEntities context = new UserContextEntities();
+        
 
         [Route("api/GetEmployees")]
-        public IQueryable<LMEmployee> GetEmployees()
+        public static IQueryable<LMEmployee> GetEmployees()
         {
+            UserContextEntities context = new UserContextEntities();
+
             var listEmployee = context.LMEmployees.Select(s => s);
 
 
