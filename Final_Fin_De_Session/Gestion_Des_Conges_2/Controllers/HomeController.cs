@@ -5,10 +5,14 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Gestion_Des_Conges_2.Models;
+using Newtonsoft.Json;
 
 namespace Gestion_Des_Conges_2.Controllers
 {
@@ -346,6 +350,40 @@ namespace Gestion_Des_Conges_2.Controllers
         }
 
 
+        //Hosted web API REST Service base url  
+        string Baseurl = "http://127.0.0.1:12138/";
+        public async Task<ActionResult> AllEmployees()
+        {
+            List<LMEmployee> EmpInfo = new List<LMEmployee>();
+
+            using (var client = new HttpClient())
+            {
+                //Passing service base url  
+                client.BaseAddress = new Uri(Baseurl);
+
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format  
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                HttpResponseMessage Res = await client.GetAsync("api/GetEmployees");
+
+                //Checking the response is successful or not which is sent using HttpClient  
+                if (Res.IsSuccessStatusCode)
+                {
+                    //Storing the response details recieved from web api   
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                    //Deserializing the response recieved from web api and storing into the Employee list  
+                    EmpInfo = JsonConvert.DeserializeObject<List<LMEmployee>>(EmpResponse);
+
+                }
+                //returning the employee list to view  
+                return View(EmpInfo);
+            }
+        }
+
+
 
         //[Authorize(Roles = "Admin")]
         //[HttpGet]
@@ -355,15 +393,15 @@ namespace Gestion_Des_Conges_2.Controllers
         //    ViewBag.Sex = new SelectList(Enum.GetValues(typeof(Sex)), Sex.Male);
         //    ViewBag.Grade = new SelectList(Enum.GetValues(typeof(Grade)), Grade.Employee);
 
-            //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(x => new LMEmployee() { EmpId = x.EmpId, EmpFName = x.EmpFName, EmpLName = x.EmpLName }).OrderBy(x => x.EmpId).ToArray();
-            //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(e => e.EmpId).ToArray();
-            //    IEnumerable<Manager> items = queryManager.Select(a => (Manager)Enum.Parse(typeof(Manager), a.ToString()));
+        //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(x => new LMEmployee() { EmpId = x.EmpId, EmpFName = x.EmpFName, EmpLName = x.EmpLName }).OrderBy(x => x.EmpId).ToArray();
+        //    var queryManager = context.LMEmployees.Where(e => e.Grade == "Manager").Select(e => e.EmpId).ToArray();
+        //    IEnumerable<Manager> items = queryManager.Select(a => (Manager)Enum.Parse(typeof(Manager), a.ToString()));
 
-            //    ViewBag.Manager = new SelectList(items);
-            //    ViewData["msg"] = "";
+        //    ViewBag.Manager = new SelectList(items);
+        //    ViewData["msg"] = "";
 
-            //    return View();
-            //}
+        //    return View();
+        //}
 
         [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
