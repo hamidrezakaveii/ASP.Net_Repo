@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Gestion_Des_Conges_2.Infrastructure;
 using Gestion_Des_Conges_2.Models;
 using Newtonsoft.Json;
 
@@ -20,7 +21,14 @@ namespace Gestion_Des_Conges_2.Controllers
     {
 
         // Definition des variables
-        UserContextEntities context = new UserContextEntities();
+        //UserContextEntities context = new UserContextEntities();
+        private ILeaveManagementRepository _context;
+        
+        //ILeaveManagementRepository context2 = new LeaveManagementDB();
+        public HomeController(ILeaveManagementRepository context)
+        {
+            _context = context;
+        }
 
 
         public enum Grade
@@ -89,7 +97,7 @@ namespace Gestion_Des_Conges_2.Controllers
 
 
 
-                    var query = context.LMEmployees.Where(c => c.Email == email && c.Pass == pass).FirstOrDefault();
+                    var query = _context.Employees.Where(c => c.Email == email && c.Pass == pass).FirstOrDefault();
 
 
                     if (query != null)
@@ -115,7 +123,7 @@ namespace Gestion_Des_Conges_2.Controllers
 
 
                         //return Redirect("/Home/LeaveRequest");
-                        return Redirect(ReturnUrl);
+                        return Redirect("index");
 
                     }
                     else
@@ -172,8 +180,9 @@ namespace Gestion_Des_Conges_2.Controllers
 
                 };
 
-                context.LMLeaveHistories.Add(leaveRequest);
-                var result = context.SaveChanges();
+                //_context.LeaveHistories.Add(leaveRequest);
+                //var result = _context.SaveChanges();
+                var result = _context.InsertLeave(leaveRequest);
 
                 if (result == 1)
                 {
@@ -199,9 +208,9 @@ namespace Gestion_Des_Conges_2.Controllers
         {
             //var requestList =
             //    context.LMLeaveHistories.Join(context.LMEmployees, l => l.EmpId, e => e.EmpId, (l, e) => new { EmployeeId = l.EmpId, EmployeeEmail = e.Email }).Where( x => x.EmployeeEmail == User.Identity.Name).FirstOrDefault().EmployeeId;
-            var employeeId = context.LMEmployees.Where(e => e.Email == User.Identity.Name).FirstOrDefault().EmpId;
+            var employeeId = _context.Employees.Where(e => e.Email == User.Identity.Name).FirstOrDefault().EmpId;
 
-            var requestList = context.LMLeaveHistories.Where(l => l.EmpId == employeeId);
+            var requestList = _context.LeaveHistories.Where(l => l.EmpId == employeeId);
 
 
 
@@ -216,9 +225,9 @@ namespace Gestion_Des_Conges_2.Controllers
         public ActionResult RequestCheck()
         {
 
-            var managerId = context.LMEmployees.Where(e => e.Email == User.Identity.Name).FirstOrDefault().EmpId;
+            var managerId = _context.Employees.Where(e => e.Email == User.Identity.Name).FirstOrDefault().EmpId;
 
-            var employeesId = context.LMEmployees.Where(e => e.ManagerEmpId == managerId).Select(r => r.EmpId).ToArray();
+            var employeesId = _context.Employees.Where(e => e.ManagerEmpId == managerId).Select(r => r.EmpId).ToArray();
 
 
             //var requestCheckList = context.LMLeaveHistories
@@ -232,7 +241,7 @@ namespace Gestion_Des_Conges_2.Controllers
             foreach (var i in employeesId)
             {
                 //requestCheckList.Add(context.LMLeaveHistories.Where(l => l.LeaveState == "Requested" && l.EmpId == i);
-                var myquery = context.LMLeaveHistories.Where(l => l.LeaveState == "Requested" && l.EmpId == i);
+                var myquery = _context.LeaveHistories.Where(l => l.LeaveState == "Requested" && l.EmpId == i);
 
                 foreach (var item in myquery)
                 {
@@ -264,7 +273,7 @@ namespace Gestion_Des_Conges_2.Controllers
         {
 
 
-            var verifyItem = context.LMLeaveHistories.Where(l => l.LeaveId == id).FirstOrDefault();
+            var verifyItem = _context.LeaveHistories.Where(l => l.LeaveId == id).FirstOrDefault();
 
             if (Request.HttpMethod == "POST")
             {
@@ -281,29 +290,13 @@ namespace Gestion_Des_Conges_2.Controllers
                     StateReason = collection.Get("StateReason")
                 };
 
-                context.LMLeaveHistories.AddOrUpdate(leaveHistory);
+                    //_context.LeaveHistories.AddOrUpdate(leaveHistory);
 
-                
-                try
-                {
-                    context.SaveChanges();
+
+                    //context.SaveChanges();
+                    _context.InsertLeave(leaveHistory);
 
                     //ntext.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var eve in e.EntityValidationErrors)
-                    {
-                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                ve.PropertyName, ve.ErrorMessage);
-                        }
-                    }
-                    throw;
-                }
 
 
                 return RedirectToAction("RequestCheck");
@@ -326,7 +319,7 @@ namespace Gestion_Des_Conges_2.Controllers
         public ActionResult AllRequest()
         {
 
-            var allRequest = context.LMLeaveHistories.Select(r => r);
+            var allRequest = _context.LeaveHistories.Select(r => r);
 
 
             return View(allRequest);
@@ -349,7 +342,7 @@ namespace Gestion_Des_Conges_2.Controllers
             return View(listEmployee);
         }
 
-
+        
         //Hosted web API REST Service base url  
         string Baseurl = "http://127.0.0.1:12138/";
         public async Task<ActionResult> AllEmployees()
@@ -412,7 +405,7 @@ namespace Gestion_Des_Conges_2.Controllers
             {
                 //int checkEmployee = 0;
                 var empId = Convert.ToInt32(collection.Get("EmpId"));
-                var checkEmployee = context.LMEmployees.Where(e => e.EmpId == empId).FirstOrDefault();
+                var checkEmployee = _context.Employees.Where(e => e.EmpId == empId).FirstOrDefault();
 
                 if (checkEmployee != null)
                 {
@@ -437,28 +430,13 @@ namespace Gestion_Des_Conges_2.Controllers
                     };
 
                     //context.Add(employee);
-                    context.LMEmployees.Add(employee);
-                int result =0;
-                try
-                {
-                    result = context.SaveChanges(); //le resultat vas etre 1 si le requete executé avec le successé.
+                    //_context.Employees.Add(employee);
+                    //int result =0;
 
+                    //result = _context.SaveChanges(); //le resultat vas etre 1 si le requete executé avec le successé.
+                    var result = _context.InsertEmployee(employee);
                     //ntext.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var eve in e.EntityValidationErrors)
-                    {
-                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach (var ve in eve.ValidationErrors)
-                        {
-                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                ve.PropertyName, ve.ErrorMessage);
-                        }
-                    }
-                    throw;
-                }
+ 
            
                     if (result == 1)
                     {
