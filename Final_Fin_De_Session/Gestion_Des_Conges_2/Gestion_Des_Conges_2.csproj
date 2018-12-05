@@ -244,6 +244,7 @@
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <EntityDeploy Include="LeaveManagment.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

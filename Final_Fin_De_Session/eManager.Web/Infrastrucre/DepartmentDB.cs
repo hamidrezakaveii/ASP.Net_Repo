@@ -27,5 +27,10 @@ namespace eManager.Web.Infrastrucre
         {
             get { return Employees; }
         }
+
+        void IDepartmentDataSource.Save()
+        {
+            SaveChanges();
+        }
     }
 }

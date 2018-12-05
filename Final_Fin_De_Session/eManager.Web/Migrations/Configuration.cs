@@ -1,3 +1,4 @@
+using System.Web.Security;
 using eManager.Domain;
 
 namespace eManager.Web.Migrations
@@ -35,6 +36,18 @@ namespace eManager.Web.Migrations
                 new Department() {Name = "Shipping"},
                 new Department() {Name = "Human Resource"}
                 );
+
+            if (!Roles.RoleExists("Admin"))
+            {
+                Roles.CreateRole("Admin");
+            }
+
+            if (Membership.GetUser("admin@cgi.com") == null)
+            {
+                Membership.CreateUser("admin@cgi.com", "123@Abc");
+                Roles.AddUserToRole("admin@cgi.com", "Admin");
+
+            }
         }
     }
 }
